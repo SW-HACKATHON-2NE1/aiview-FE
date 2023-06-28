@@ -2,6 +2,7 @@ import RadioButtonGroup from "./RadioButtonGroup";
 import styled from "@emotion/styled";
 
 const StyledRadioButtonGroup = styled(RadioButtonGroup)(({ theme }) => ({
+  overflow: "scroll",
   "&::-webkit-scrollbar": {
     width: "28px",
   },

@@ -1,65 +1,9 @@
 import Button from "@/components/Button";
 import GridSelection from "@/components/GridSelection";
-import List from "@/components/List";
-import styled from "@emotion/styled";
 import ArrowRightIcon from "@public/icons/arrow_right.svg";
 import { useState } from "react";
 
-const PageContainer = styled("div")({
-  padding: "60px 260px",
-  whiteSpace: "nowrap",
-  [`& ${Button}`]: {
-    marginTop: "140px",
-    alignSelf: "center",
-  },
-});
-
-const PageTitle = styled("h1")({
-  marginBottom: "54px",
-});
-const PageBody = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "start",
-});
-
-const Divider = styled("div")(({ theme }) => ({
-  backgroundColor: theme.color.G200,
-  width: "auto",
-  height: "1px",
-}));
-
-const StyledList = styled(List)({
-  height: "422px",
-});
-
-const JobSelectSection = styled("section")({
-  marginTop: "88px",
-  display: "flex",
-  gap: "133px",
-  "& > div": {
-    display: "flex",
-    gap: "70px",
-    "& > div": {
-      display: "flex",
-      flexDirection: "column",
-      gap: "24px",
-      margin: "16px",
-    },
-  },
-});
-
-const SubjectSelectSection = styled("section")({
-  marginTop: "80px",
-  display: "flex",
-  gap: "133px",
-  "& > div": {
-    gap: "10px",
-    width: "fit-content",
-    height: "fit-content",
-    gridTemplateColumns: "1fr 1fr 1fr",
-  },
-});
+import S from "@/pages/select.styled";
 
 const bigJobs = [
   "생산・제조",
@@ -107,19 +51,16 @@ export default function SelectPage() {
     }));
 
   return (
-    <PageContainer>
-      <PageTitle>AI 가상면접을 시작합니다.</PageTitle>
-      <Divider />
-      <PageBody>
-        <JobSelectSection>
+    <S.PageContainer>
+      <S.PageTitle>AI 가상면접을 시작합니다.</S.PageTitle>
+      <S.Divider />
+      <S.PageBody>
+        <S.JobSelectSection>
           <h2>직무 선택</h2>
           <div>
             <div>
               <h3>대분류</h3>
-              <StyledList
-                style={{
-                  overflowX: "hidden",
-                }}
+              <S.StyledList
                 onSelectChanged={onChanged("bigJob")}
                 defaultIcon={<ArrowRightIcon />}
                 items={bigJobs}
@@ -127,23 +68,20 @@ export default function SelectPage() {
             </div>
             <div>
               <h3>소분류</h3>
-              <StyledList
-                style={{
-                  overflowX: "hidden",
-                }}
+              <S.StyledList
                 onSelectChanged={onChanged("smolJob")}
                 items={smolJobs}
               />
             </div>
           </div>
-        </JobSelectSection>
-        <SubjectSelectSection>
+        </S.JobSelectSection>
+        <S.SubjectSelectSection>
           <h2>과목 선택</h2>
           <GridSelection
             onSelectChanged={onChanged("subject")}
             items={subjects}
           />
-        </SubjectSelectSection>
+        </S.SubjectSelectSection>
         <Button
           onClick={() => {
             console.log("설정 완료!\n", states);
@@ -151,7 +89,7 @@ export default function SelectPage() {
         >
           다음
         </Button>
-      </PageBody>
-    </PageContainer>
+      </S.PageBody>
+    </S.PageContainer>
   );
 }
