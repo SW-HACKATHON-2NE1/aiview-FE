@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import RadioButtonGroup from "@/components/RadioButtonGroup";
+import GridSelection from "@/components/GridSelection";
 
 export default function ComponentsPage() {
   return (
@@ -25,20 +25,21 @@ export default function ComponentsPage() {
         <Button onClick={() => alert("you just clicked test button :3")}>
           다음
         </Button>
-        <RadioButtonGroup
-          style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-        >
-          <div style={{ display: "flex", gap: "10px" }}>
-            <RadioButtonGroup.Button name="자료구조" />
-            <RadioButtonGroup.Button name="알고리즘" />
-            <RadioButtonGroup.Button name="네트워크" />
-          </div>
-          <div style={{ display: "flex", gap: "10px" }}>
-            <RadioButtonGroup.Button name="운영체제" />
-            <RadioButtonGroup.Button name="데이터베이스" />
-            <RadioButtonGroup.Button name="정보보호" />
-          </div>
-        </RadioButtonGroup>
+        <GridSelection
+          items={[
+            "자료구조",
+            "알고리즘",
+            "네트워크",
+            "운영체제",
+            "데이터베이스",
+            "정보보호",
+          ]}
+          style={{
+            gap: "10px",
+            width: "fit-content",
+            gridTemplateColumns: "1fr 1fr 1fr",
+          }}
+        />
       </div>
     </main>
   );

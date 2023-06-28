@@ -1,7 +1,6 @@
 import React, { useContext, createContext, useState } from "react";
 import styled from "@emotion/styled";
 import Button from "./Button";
-import OutlineCheckIcon from "@public/icons/check_outline.svg";
 
 interface RadioButtonGroupContextType {
   clicked(name: string): void;
@@ -52,17 +51,17 @@ const SelectedRadioButton = styled(RadioButton)(({ theme }) => ({
   background: theme.color.blue95,
   display: "flex",
   justifyContent: "space-between",
-  "& svg": {
-    stroke: theme.color.blue,
-  },
+  "& svg": {},
 }));
 
 interface RadioButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   name: string;
+  selectedIcon?: JSX.Element | undefined;
 }
 RadioButtonGroup.Button = function ({
   name,
   onClick,
+  selectedIcon,
   ...props
 }: RadioButtonProps) {
   const { selectedValue, clicked } = useContext(RadioButtonGroupContext);
@@ -75,7 +74,7 @@ RadioButtonGroup.Button = function ({
   return isSelected ? (
     <SelectedRadioButton onClick={handleClick} {...props}>
       <span>{name}</span>
-      <OutlineCheckIcon />
+      {selectedIcon}
     </SelectedRadioButton>
   ) : (
     <RadioButton onClick={handleClick} {...props}>
