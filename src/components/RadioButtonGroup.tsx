@@ -1,5 +1,5 @@
 import React, { useContext, createContext, useState } from "react";
-import styled from "@emotion/styled";
+import S from "./RadioButtonGroup.styled";
 import Button from "./Button";
 
 interface RadioButtonGroupContextType {
@@ -42,25 +42,6 @@ function RadioButtonGroup({
   );
 }
 
-const RadioButton = styled(Button)(({ theme }) => ({
-  borderRadius: "4px",
-  border: `1px solid ${theme.color.G100}`,
-  backgroundColor: "white",
-  width: "335px",
-  height: "78px",
-  fontSize: "24px",
-  color: theme.color.G700,
-  textAlign: "left",
-  display: "flex",
-  justifyContent: "space-between",
-}));
-
-const SelectedRadioButton = styled(RadioButton)(({ theme }) => ({
-  border: `1px solid ${theme.color.blue}`,
-  background: theme.color.blue95,
-  "& svg": {},
-}));
-
 interface RadioButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   name: string;
   selectedIcon?: JSX.Element | undefined;
@@ -81,15 +62,15 @@ RadioButtonGroup.Button = function ({
   };
 
   return isSelected ? (
-    <SelectedRadioButton onClick={handleClick} {...props}>
+    <S.SelectedRadioButton onClick={handleClick} {...props}>
       <span>{name}</span>
       {selectedIcon}
-    </SelectedRadioButton>
+    </S.SelectedRadioButton>
   ) : (
-    <RadioButton onClick={handleClick} {...props}>
+    <S.RadioButton onClick={handleClick} {...props}>
       <span>{name}</span>
       {defaultIcon}
-    </RadioButton>
+    </S.RadioButton>
   );
 };
 
