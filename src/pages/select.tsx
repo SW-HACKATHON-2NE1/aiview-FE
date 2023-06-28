@@ -30,7 +30,6 @@ const Divider = styled("div")(({ theme }) => ({
 }));
 
 const StyledList = styled(List)({
-  overflowX: "hidden",
   height: "422px",
 });
 
@@ -118,6 +117,9 @@ export default function SelectPage() {
             <div>
               <h3>대분류</h3>
               <StyledList
+                style={{
+                  overflowX: "hidden",
+                }}
                 onSelectChanged={onChanged("bigJob")}
                 defaultIcon={<ArrowRightIcon />}
                 items={bigJobs}
@@ -126,6 +128,9 @@ export default function SelectPage() {
             <div>
               <h3>소분류</h3>
               <StyledList
+                style={{
+                  overflowX: "hidden",
+                }}
                 onSelectChanged={onChanged("smolJob")}
                 items={smolJobs}
               />
