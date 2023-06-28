@@ -22,6 +22,7 @@ function GridSelection({ items, style, ...props }: GridSelectionProps) {
     >
       {items.map((item) => (
         <RadioButtonGroup.Button
+          key={item}
           name={item}
           selectedIcon={<StyledCheckIcon />}
         />
