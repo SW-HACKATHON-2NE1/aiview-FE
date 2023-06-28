@@ -1,5 +1,7 @@
 import Button from "@/components/Button";
 import GridSelection from "@/components/GridSelection";
+import List from "@/components/List";
+import ArrowRightIcon from "@public/icons/arrow_right.svg";
 
 export default function ComponentsPage() {
   return (
@@ -40,9 +42,52 @@ export default function ComponentsPage() {
           style={{
             gap: "10px",
             width: "fit-content",
+            height: "fit-content",
             gridTemplateColumns: "1fr 1fr 1fr",
           }}
         />
+        <div
+          style={{
+            display: "flex",
+            gap: "20px",
+          }}
+        >
+          <List
+            defaultIcon={<ArrowRightIcon />}
+            style={{
+              overflowX: "hidden",
+              width: "403px",
+              height: "422px",
+              padding: "16px",
+            }}
+            items={[
+              "생산・제조",
+              "영업・고객상담",
+              "건설",
+              "금융",
+              "디자인",
+              "미디어",
+              "전문・특수직",
+            ]}
+          />
+          <List
+            style={{
+              overflowX: "hidden",
+              width: "403px",
+              height: "422px",
+              padding: "16px",
+            }}
+            items={[
+              "응용프로그래머",
+              "네트워크・보안・운영",
+              "빅테이터・AI(인공지능)",
+              "게임개발",
+              "HW・임베디드",
+              "SW・솔루션・ERP",
+              "서비스기획・PM",
+            ]}
+          />
+        </div>
       </div>
     </main>
   );

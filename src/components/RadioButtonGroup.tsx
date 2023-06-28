@@ -51,24 +51,26 @@ const RadioButton = styled(Button)(({ theme }) => ({
   fontSize: "24px",
   color: theme.color.G700,
   textAlign: "left",
+  display: "flex",
+  justifyContent: "space-between",
 }));
 
 const SelectedRadioButton = styled(RadioButton)(({ theme }) => ({
   border: `1px solid ${theme.color.blue}`,
   background: theme.color.blue95,
-  display: "flex",
-  justifyContent: "space-between",
   "& svg": {},
 }));
 
 interface RadioButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   name: string;
   selectedIcon?: JSX.Element | undefined;
+  defaultIcon?: JSX.Element | undefined;
 }
 RadioButtonGroup.Button = function ({
   name,
   onClick,
-  selectedIcon,
+  defaultIcon,
+  selectedIcon = defaultIcon,
   ...props
 }: RadioButtonProps) {
   const { selectedValue, clicked } = useContext(RadioButtonGroupContext);
@@ -85,7 +87,8 @@ RadioButtonGroup.Button = function ({
     </SelectedRadioButton>
   ) : (
     <RadioButton onClick={handleClick} {...props}>
-      {name}
+      <span>{name}</span>
+      {defaultIcon}
     </RadioButton>
   );
 };
