@@ -3,7 +3,7 @@ name: ainterview_web_deploy #프로젝트 이름
 on:
   push:
     branches:
-      - master #브랜치
+      - main #브랜치
   workflow_dispatch: #push 외에도 수동 실행 enable
 
 jobs:
