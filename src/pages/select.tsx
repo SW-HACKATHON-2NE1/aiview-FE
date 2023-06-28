@@ -3,6 +3,7 @@ import GridSelection from "@/components/GridSelection";
 import ArrowRightIcon from "@public/icons/arrow_right.svg";
 import { useState } from "react";
 
+import Divider from "@/components/Divider";
 import S from "@/pages/select.styled";
 
 const bigJobs = [
@@ -53,7 +54,7 @@ export default function SelectPage() {
   return (
     <S.PageContainer>
       <S.PageTitle>AI 가상면접을 시작합니다.</S.PageTitle>
-      <S.Divider />
+      <Divider />
       <S.PageBody>
         <S.JobSelectSection>
           <h2>직무 선택</h2>

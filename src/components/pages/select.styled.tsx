@@ -21,12 +21,6 @@ const PageBody = styled("div")({
   alignItems: "start",
 });
 
-const Divider = styled("div")(({ theme }) => ({
-  backgroundColor: theme.color.G200,
-  width: "auto",
-  height: "1px",
-}));
-
 const StyledList = styled(List)({
   height: "422px",
   overflowX: "hidden",
@@ -64,7 +58,6 @@ export default {
   PageContainer,
   PageTitle,
   PageBody,
-  Divider,
   StyledList,
   JobSelectSection,
   SubjectSelectSection,
