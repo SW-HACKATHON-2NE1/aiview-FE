@@ -26,6 +26,9 @@ export default function ComponentsPage() {
           다음
         </Button>
         <GridSelection
+          onSelectChanged={(v) =>
+            console.log("grid selection value changed to ", v)
+          }
           items={[
             "자료구조",
             "알고리즘",

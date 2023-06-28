@@ -14,15 +14,22 @@ const RadioButtonGroupContext = createContext<RadioButtonGroupContextType>({
   selectedValue: null,
 });
 
-interface RadioButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface RadioButtonGroupProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   children: JSX.Element[];
+  onSelectChanged?: (value: string) => void;
 }
-function RadioButtonGroup({ children, ...props }: RadioButtonGroupProps) {
+function RadioButtonGroup({
+  children,
+  onSelectChanged,
+  ...props
+}: RadioButtonGroupProps) {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
 
   const contextValue = {
     clicked(name: string) {
       setSelectedValue(name);
+      if (onSelectChanged) onSelectChanged(name);
     },
     selectedValue,
   };
