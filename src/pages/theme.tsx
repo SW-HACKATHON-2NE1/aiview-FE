@@ -1,8 +1,6 @@
 import { theme } from "@/core/theme";
 import styled from "@emotion/styled";
 
-import ArrowDownIcon from "@public/icons/arrow_down.svg";
-
 const colors = Object.entries(theme.color) as [
   keyof typeof theme.color,
   ValueOf<typeof theme.color>
@@ -19,7 +17,6 @@ const ColorBox = styled("div")<{ color: keyof (typeof theme)["color"] }>(
 export default function ThemePage() {
   return (
     <main>
-      <ArrowDownIcon />
       <h1>테마 모음 페이지</h1>
       <div
         style={{
