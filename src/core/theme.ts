@@ -12,6 +12,7 @@ export const theme = {
     G800: "#333333",
     G900: "#1a1a1a",
     blue: "#497af8",
+    blue80: "#d8e4fe",
     blue95: "#f6f8ff",
     red: "#FF3434",
   },
