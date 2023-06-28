@@ -31,6 +31,7 @@ export default function IconsPage() {
       <div style={{ display: "flex", gap: "10px", marginTop: "50px" }}>
         {Icons.map(([name, Icon], i) => (
           <div
+            key={i}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -39,7 +40,7 @@ export default function IconsPage() {
               padding: "5px",
             }}
           >
-            <Icon key={i} />
+            <Icon />
             {name}
           </div>
         ))}
