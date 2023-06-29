@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import axios from "axios";
-import Mainimage from "@public/icons/main_image.svg";
-import Button from "@/components/Button";
+import Mainimage from "@public/images/main_image.svg";
 import styled from "@emotion/styled";
 import Link from "next/link";
 
@@ -82,14 +81,8 @@ export default function Home() {
             자신의 역량을 파악해보세요
           </div>
           <div style={{ height: "56px" }} />
-          <Mainbutton
-            onClick={() => {
-              // window.location.href = "http://localhost:3000/select";
-            }}
-          >
-            <Link href="/select">
-              면접 시작하기
-              </Link>
+          <Mainbutton>
+            <Link href="/select">면접 시작하기</Link>
           </Mainbutton>
         </RightSection>
       </Container>
