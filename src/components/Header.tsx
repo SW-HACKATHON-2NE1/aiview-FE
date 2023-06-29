@@ -1,14 +1,18 @@
+import Link from "next/link";
 import S from "./Header.styled";
 
 function Header() {
   return (
     <S.HeaderWrapper>
       <S.HeaderContainer>
-        <S.Logo>
-          <div>로고</div>
-          <span>에이뷰</span>
-        </S.Logo>
-        <span>결과 리포트</span>
+        <Link href="/">
+          <img src="/images/logo.png" />
+        </Link>
+        <div>
+          <span>기업 매칭</span>
+          <span>결과 리포트</span>
+          <span>마이페이지</span>
+        </div>
       </S.HeaderContainer>
     </S.HeaderWrapper>
   );

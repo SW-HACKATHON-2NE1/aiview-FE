@@ -5,3 +5,27 @@
     sans-serif;
   margin: 0;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  color: white; /* 텍스트 색상 */
+  padding: 15px 20px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  transition: opacity 0.3s; /* 투명도 변경이 부드럽게 전환되도록 */
+  cursor: pointer;
+}
+
+/* 마우스를 올렸을 때의 투명도 */
+button:hover {
+  opacity: 0.6;
+}
+
+span{
+  margin-right:30px;
+}
