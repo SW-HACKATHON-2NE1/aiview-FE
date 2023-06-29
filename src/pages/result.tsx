@@ -43,7 +43,8 @@ function PageBody() {
     typeof localStorage !== undefined ? localStorage.getItem("token") : "",
   ]);
 
-  if (data.isLoading || !data.data) return <>loading...</>;
+  if (data.isLoading || !data.data || !data.data.reports)
+    return <>loading...</>;
   return (
     <PageBodyContainer>
       <section>
