@@ -8,7 +8,8 @@ const StyledCheckIcon = styled(OutlineCheckIcon)(({ theme }) => ({
   stroke: theme.color.blue,
 }));
 
-interface GridSelectionProps extends Omit<RadioButtonGroupProps, "children"> {
+export interface GridSelectionProps
+  extends Omit<RadioButtonGroupProps, "children"> {
   items: string[];
 }
 function GridSelection({ items, style, ...props }: GridSelectionProps) {
