@@ -9,6 +9,10 @@ import {
   Legend,
 } from "chart.js";
 
+ChartJS.defaults.font = {
+  family: "Pretendard",
+  size: 200,
+};
 ChartJS.register(
   RadialLinearScale,
   CategoryScale,

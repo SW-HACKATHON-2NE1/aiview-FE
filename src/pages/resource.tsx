@@ -8,6 +8,7 @@ import List from "@/components/List";
 import ArrowRightIcon from "@public/icons/arrow_right.svg";
 import CollapseBar from "@/components/Collapse";
 import Tabs from "@/components/Tabs";
+import RadarChart from "@/components/RadarChart";
 
 /**
  * 테스트할 아이콘 "파일 이름"들. 새로 추가할 SVG아이콘 파일명을 배열에 추가해주세요.
@@ -221,6 +222,23 @@ export default function ResourcePage() {
           </CollapseBar.Body>
         </CollapseBar>
         <Tabs items={["질문1", "질문2", "질문3"]} />
+        <div
+          style={{
+            width: "500px",
+            height: "500px",
+          }}
+        >
+          <RadarChart
+            numbers={{
+              scoreAL: 1,
+              scoreDB: 0.3,
+              scoreDS: 0.12,
+              scoreIS: 0.3,
+              scoreNT: 0.5,
+              scoreOS: 0.9,
+            }}
+          />
+        </div>
       </div>
     </main>
   );
