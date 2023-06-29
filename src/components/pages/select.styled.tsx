@@ -1,14 +1,11 @@
 import Button from "@/components/Button";
 import List from "@/components/List";
 import styled from "@emotion/styled";
+import { keyframes } from "@emotion/react";
 
 const PageContainer = styled("div")({
   padding: "60px 260px",
   whiteSpace: "nowrap",
-  [`& ${Button}`]: {
-    marginTop: "140px",
-    alignSelf: "center",
-  },
 });
 
 const PageTitle = styled("h1")({
@@ -33,26 +30,57 @@ const JobSelectSection = styled("section")({
   "& > div": {
     display: "flex",
     gap: "70px",
-    "& > div": {
-      display: "flex",
-      flexDirection: "column",
-      gap: "24px",
-      margin: "16px",
-    },
   },
 });
 
-const SubjectSelectSection = styled("section")({
-  marginTop: "80px",
-  display: "flex",
-  gap: "133px",
-  "& > div": {
-    gap: "10px",
-    width: "fit-content",
+const JobSelectContainer = styled("div")<{ isHidden: boolean }>(
+  ({ isHidden }) => ({
+    visibility: isHidden ? "hidden" : "visible",
+    display: "flex",
+    flexDirection: "column",
+    gap: "24px",
+    margin: "16px",
+    "& *": {
+      transition: "all 300ms",
+      opacity: isHidden ? 0 : 1,
+    },
+  })
+);
+
+const SubjectSelectSection = styled("section")<{ isHidden: boolean }>(
+  ({ isHidden }) => ({
+    marginTop: "80px",
+    display: "flex",
+    visibility: isHidden ? "hidden" : "visible",
+    gap: "133px",
+    transition: "all 300ms",
     height: "fit-content",
-    gridTemplateColumns: "1fr 1fr 1fr",
-  },
+    "& > div": {
+      gap: "10px",
+      width: "fit-content",
+      height: "fit-content",
+      gridTemplateColumns: "1fr 1fr 1fr",
+    },
+    "& *": {
+      transition: "all 300ms",
+      opacity: isHidden ? 0 : 1,
+    },
+  })
+);
+
+const wingwing = keyframes({
+  "0%": { transform: "translateY(-30px)" },
+  "50%": { transform: "translateY(30px)" },
+  "100%": { transform: "translateY(-30px)" },
 });
+const SubmitButton = styled(Button)<{ isHidden: boolean }>(({ isHidden }) => ({
+  marginTop: "140px",
+  alignSelf: "center",
+  visibility: isHidden ? "hidden" : "visible",
+  transition: "all 300ms",
+  opacity: isHidden ? 0 : 1,
+  animation: `${wingwing} 4s ease infinite`,
+}));
 
 export default {
   PageContainer,
@@ -60,5 +88,7 @@ export default {
   PageBody,
   StyledList,
   JobSelectSection,
+  JobSelectContainer,
   SubjectSelectSection,
+  SubmitButton,
 };

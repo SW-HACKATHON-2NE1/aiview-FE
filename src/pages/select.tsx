@@ -7,6 +7,10 @@ import Divider from "@/components/Divider";
 import S from "@/pages/select.styled";
 
 const bigJobs = [
+  "IT・인터넷",
+  "마케팅・광고・홍보",
+  "무역・유통",
+  "경영・사무",
   "생산・제조",
   "영업・고객상담",
   "건설",
@@ -16,6 +20,11 @@ const bigJobs = [
   "전문・특수직",
 ];
 const smolJobs = [
+  "QA",
+  "앱개발",
+  "웹개발",
+  "데이터엔지니어・분석・DBA",
+  "시스템프로그래머",
   "응용프로그래머",
   "네트워크・보안・운영",
   "빅테이터・AI(인공지능)",
@@ -45,11 +54,14 @@ export default function SelectPage() {
     subject: null,
   });
 
-  const onChanged = (key: keyof State) => (value: string) =>
+  const onChanged = (key: keyof State) => (value: string) => {
+    if (key === "smolJob")
+      scrollTo({ top: window.outerHeight, behavior: "smooth" });
     setStates((prev) => ({
       ...prev,
       [key]: value,
     }));
+  };
 
   return (
     <S.PageContainer>
@@ -59,37 +71,39 @@ export default function SelectPage() {
         <S.JobSelectSection>
           <h2>직무 선택</h2>
           <div>
-            <div>
+            <S.JobSelectContainer isHidden={false}>
               <h3>대분류</h3>
               <S.StyledList
                 onSelectChanged={onChanged("bigJob")}
                 defaultIcon={<ArrowRightIcon />}
                 items={bigJobs}
               />
-            </div>
-            <div>
+            </S.JobSelectContainer>
+            <S.JobSelectContainer isHidden={!states.bigJob}>
               <h3>소분류</h3>
               <S.StyledList
                 onSelectChanged={onChanged("smolJob")}
                 items={smolJobs}
               />
-            </div>
+            </S.JobSelectContainer>
           </div>
         </S.JobSelectSection>
-        <S.SubjectSelectSection>
+        <S.SubjectSelectSection isHidden={!states.smolJob}>
           <h2>과목 선택</h2>
           <GridSelection
             onSelectChanged={onChanged("subject")}
             items={subjects}
           />
         </S.SubjectSelectSection>
-        <Button
+        <S.SubmitButton
+          isHidden={!states.subject}
           onClick={() => {
             console.log("설정 완료!\n", states);
+            window.location.href = "http://localhost:3000/interview";
           }}
         >
           다음
-        </Button>
+        </S.SubmitButton>
       </S.PageBody>
     </S.PageContainer>
   );

@@ -1,6 +1,5 @@
 import React, { useContext, createContext, useState } from "react";
 import S from "./RadioButtonGroup.styled";
-import Button from "./Button";
 
 interface RadioButtonGroupContextType {
   clicked(name: string): void;
@@ -61,15 +60,10 @@ RadioButtonGroup.Button = function ({
     if (onClick) onClick(ev);
   };
 
-  return isSelected ? (
-    <S.SelectedRadioButton onClick={handleClick} {...props}>
+  return (
+    <S.RadioButton onClick={handleClick} isSelected={isSelected} {...props}>
       <span>{name}</span>
-      {selectedIcon}
-    </S.SelectedRadioButton>
-  ) : (
-    <S.RadioButton onClick={handleClick} {...props}>
-      <span>{name}</span>
-      {defaultIcon}
+      {isSelected ? selectedIcon : defaultIcon}
     </S.RadioButton>
   );
 };
