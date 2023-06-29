@@ -6,6 +6,7 @@ import VideoRecorder from "@/core/VideoRecorder";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import CSR from "@/components/CSR";
+import axios from "axios";
 
 enum Phase {
   Idle,
@@ -95,8 +96,46 @@ function Interview({ question }: InterviewProps) {
     setPhase(Phase.Ready);
   };
 
-  const handleEnd = () => {
+  const handleEnd = async () => {
     videoRecorder.current.stopRecorder();
+
+    const token = localStorage.getItem("token") as string;
+
+    const { uploadUrl } = await fetch(
+      `https://aiview.shop/presigned-url/upload/${question.questionId}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    ).then<PreSignedUploadAPIResponse>((res) => res.json());
+    console.log(uploadUrl);
+    const blob = new Blob(videoRecorder.current.chunks, { type: "video/webm" });
+    const formdata = new FormData();
+    formdata.append("video", blob, "video.webm");
+    await fetch(uploadUrl, {
+      method: "PUT",
+      body: formdata,
+      headers: {
+        "Content-Type": "video/webm",
+      },
+    }).catch((e) => {});
+
+    await fetch(`https://aiview.shop/transcription/${question.questionId}`, {
+      method: "POST",
+      body: JSON.stringify({}),
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    const data = await fetch(`https://aiview.shop/gpt/${question.questionId}`, {
+      headers: {
+        Authorization: token,
+      },
+      body: JSON.stringify({}),
+    }).then((res) => res.json());
+
     setPhase(Phase.End);
   };
 
@@ -147,13 +186,13 @@ function Interview({ question }: InterviewProps) {
 
 function InterviewPageBody() {
   const router = useRouter();
-  const subjectid = router.query["subjectid"] ?? "";
+  const subjectid = router.query["subjectid"];
+  if (!subjectid) return <>loading...</>;
 
   const firstQuestion = useSWR<FirstQuestionAPIResponse>([
     `https://aiview.shop/question/first/${subjectid}`,
     typeof localStorage !== undefined ? localStorage.getItem("token") : "",
   ]);
-
   if (firstQuestion.isLoading || !firstQuestion.data) return <>loading...</>;
 
   return <Interview question={firstQuestion.data} />;

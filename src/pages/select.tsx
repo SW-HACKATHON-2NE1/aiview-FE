@@ -1,11 +1,10 @@
-import Button from "@/components/Button";
 import GridSelection from "@/components/GridSelection";
 import ArrowRightIcon from "@public/icons/arrow_right.svg";
 import { useState } from "react";
 
 import Divider from "@/components/Divider";
 import S from "@/pages/select.styled";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 const bigJobs = [
   "IT・인터넷",
@@ -57,6 +56,7 @@ interface State {
   subject: ValueOf<typeof subjects> | null;
 }
 export default function SelectPage() {
+  const router = useRouter();
   const [states, setStates] = useState<State>({
     bigJob: null,
     smolJob: null,
@@ -104,14 +104,17 @@ export default function SelectPage() {
             items={subjects}
           />
         </S.SubjectSelectSection>
-        <S.SubmitButton isHidden={!states.subject}>
-          <Link
-            href={`/interview?subjectid=${
-              subjectIDmap[states.subject as keyof typeof subjectIDmap]
-            }`}
-          >
-            다음
-          </Link>
+        <S.SubmitButton
+          isHidden={!states.subject}
+          onClick={() =>
+            router.push(
+              `/interview?subjectid=${
+                subjectIDmap[states.subject as keyof typeof subjectIDmap]
+              }`
+            )
+          }
+        >
+          다음
         </S.SubmitButton>
       </S.PageBody>
     </S.PageContainer>

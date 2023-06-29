@@ -30,3 +30,7 @@ interface FirstQuestionAPIResponse {
   content: string;
   subjectCode: string;
 }
+
+interface PreSignedUploadAPIResponse {
+  uploadUrl: string;
+}
