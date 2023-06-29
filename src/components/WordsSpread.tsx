@@ -3,19 +3,28 @@ import ReactWordcloud from "react-wordcloud";
 import CSR from "./CSR";
 import { useTheme } from "@emotion/react";
 
-function sortWordData(words: { text: string; value: number }[]) {
-  return words.sort((a, b) =>
-    a.value < b.value ? 1 : a.value > b.value ? -1 : 0
-  );
+function sortWordData(words: [string, number][]) {
+  return words.sort((a, b) => (a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0));
 }
 
 const WordSpreadContainer = styled("div")(({ theme }) => ({
   borderRadius: "10px",
   backgroundColor: theme.color.blue95,
 }));
-function WordSpread({ words }: { words: { text: string; value: number }[] }) {
+
+interface WordSpreadProps {
+  angry: number;
+  calm: number;
+  confused: number;
+  disgusted: number;
+  fear: number;
+  happy: number;
+  sad: number;
+  surprised: number;
+}
+function WordSpread(words: WordSpreadProps) {
   const theme = useTheme();
-  const sortedWords = sortWordData(words);
+  const sortedWords = sortWordData(Object.entries(words));
   const colorMap = [
     theme.color.blue,
     theme.color.blue,
@@ -33,9 +42,9 @@ function WordSpread({ words }: { words: { text: string; value: number }[] }) {
         <ReactWordcloud
           callbacks={{
             getWordColor: (word) =>
-              colorMap[sortedWords.findIndex((v) => v.text == word.text)],
+              colorMap[sortedWords.findIndex((v) => v[0] == word.text)],
           }}
-          words={sortedWords}
+          words={sortedWords.map(([text, value]) => ({ text, value }))}
           options={{
             rotations: 0,
             rotationAngles: [0, 0],

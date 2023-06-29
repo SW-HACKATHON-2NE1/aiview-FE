@@ -248,40 +248,16 @@ export default function ResourcePage() {
             }}
           >
             <WordSpread
-              words={[
-                {
-                  text: "told",
-                  value: 64,
-                },
-                {
-                  text: "mistake",
-                  value: 11,
-                },
-                {
-                  text: "thought",
-                  value: 16,
-                },
-                {
-                  text: "bad",
-                  value: 17,
-                },
-                {
-                  text: "tolaaad",
-                  value: 264,
-                },
-                {
-                  text: "miaaaastake",
-                  value: 131,
-                },
-                {
-                  text: "thaaaought",
-                  value: 56,
-                },
-                {
-                  text: "baaaad",
-                  value: 77,
-                },
-              ]}
+              {...{
+                angry: 0,
+                calm: 0,
+                confused: 0,
+                disgusted: 0,
+                fear: 0,
+                happy: 0,
+                sad: 0,
+                surprised: 0,
+              }}
             />
           </div>
         </div>

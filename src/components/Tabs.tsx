@@ -26,8 +26,8 @@ function Tabs({
   children,
   ...props
 }: React.PropsWithChildren<GridSelectionProps>) {
-  const [currentItem, setCurrentItem] = useState<ValueOf<typeof items> | null>(
-    null
+  const [currentItem, setCurrentItem] = useState<ValueOf<typeof items>>(
+    items[0]
   );
 
   return (
