@@ -7,6 +7,7 @@ const Startbtn = styled("button")(({ theme }) => ({
     border: "1px solid",
     borderRadius: "100%",
     fontSize: "24px",
+    whiteSpace: "nowrap",
     fontWeight: 700,
     fontFamily: "pretendard",
     color: "white",
@@ -86,97 +87,134 @@ const Interviewerdiv = styled("div")(({ theme }) => ({
 }
 
 export default function CameraCapture() {
-  const videoRef = useRef(null);
-  const mediaRecorderRef = useRef(null);
-  const chunksRef = useRef([]);
-  const [isCameraAvailable, setCameraAvailable] = useState(false);
-  const [isRecording, setRecording] = useState(false);
-  const [recordedVideoBlob, setRecordedVideoBlob] = useState(null);
+    const videoRef = useRef(null);
+    const mediaRecorderRef = useRef(null);
+    const chunksRef = useRef([]);
+    const [isCameraAvailable, setCameraAvailable] = useState(false);
+    const [isRecording, setRecording] = useState(false);
+    const [recordedVideoBlob, setRecordedVideoBlob] = useState(null);
+    const [timerRunning, setTimerRunning] = useState(false);
+    const [isLoading, setLoading] = useState(true);
+    const [isEnding, setEnding] = useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
     if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
-      navigator.mediaDevices.getUserMedia({ video: { width: 60, height: 75 } })
-        .then(stream => {
-          const video = videoRef.current;
-          video.srcObject = stream;
-          video.play();
-          setCameraAvailable(true);
+        navigator.mediaDevices
+        .getUserMedia({ video: { width: 60, height: 75 } })
+        .then((stream) => {
+            const video = videoRef.current;
+            video.srcObject = stream;
+            video.play();
+            setCameraAvailable(true);
         })
-        .catch(error => {
-          console.error('Error accessing camera:', error);
-          setCameraAvailable(false);
+        .catch((error) => {
+            console.error('Error accessing camera:', error);
+            setCameraAvailable(false);
         });
     } else {
-      console.error('getUserMedia is not supported.');
-      setCameraAvailable(false);
+        console.error('getUserMedia is not supported.');
+        setCameraAvailable(false);
     }
     }, []);
 
-  const handleStartRecording = () => {
-    const video = videoRef.current;
-    const stream = video.srcObject;
-    const mediaRecorder = new MediaRecorder(stream);
-    mediaRecorderRef.current = mediaRecorder;
-    chunksRef.current = [];
+    const handleStartRecording = () => {
+        const video = videoRef.current;
+        const stream = video.srcObject;
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = mediaRecorder;
+        chunksRef.current = [];
+        mediaRecorder.addEventListener('dataavailable', handleDataAvailable);
+        mediaRecorder.start();
+        setRecording(true);
+        setTimerRunning(true); // Start the timer
+        setLoading(false); // Hide the Loaddiv
+        setEnding(false); // Hide the ending message
+    };
 
-    mediaRecorder.addEventListener('dataavailable', handleDataAvailable);
-    mediaRecorder.start();
-    setRecording(true);
-  };
+    const handleStopRecording = () => {
+        const mediaRecorder = mediaRecorderRef.current;
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+        }
+        setRecording(false);
+        setTimerRunning(false); // Stop the timer
+        setEnding(true); // Show the ending message
+        };
 
-  const handleStopRecording = () => {
-    const mediaRecorder = mediaRecorderRef.current;
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      mediaRecorder.stop();
-    }
-    setRecording(false);
-  };
+        const handleDataAvailable = (event) => {
+        if (event.data.size > 0) {
+            chunksRef.current.push(event.data);
+        }
+        
+        const blob = new Blob(chunksRef.current, { type: 'video/webm' });
+        setRecordedVideoBlob(blob);
+        
+        if (blob) {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'recorded_video.webm';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
 
-  const handleDataAvailable = event => {
-    if (event.data.size > 0) {
-      chunksRef.current.push(event.data);
-    }
-  };
+    };
 
-  const handleSaveRecording = () => {
-    const blob = new Blob(chunksRef.current, { type: 'video/webm' });
-    setRecordedVideoBlob(blob);
-    downloadVideo(blob);
-  };
+    const handleSaveVideo = () => {
+        const blob = new Blob(chunksRef.current, { type: 'video/webm' });
+        setRecordedVideoBlob(blob);
+    };
 
-  const downloadVideo = blob => {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'recorded_video.webm';
-    link.click();
-    URL.revokeObjectURL(url);
-  };
+    const downloadVideo = () => {
+        if (recordedVideoBlob) {
+            const url = URL.createObjectURL(recordedVideoBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'recorded_video.webm';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+    };
 
-  return (  
+    return (
+        
     <div>
-        <div style={{ position: "relative", width: "100%", height: "440px", backgroundColor: "black", display: "inline-flex", justifyContent: "flex-start", alignItems: "center", flexDirection: "column"}}>
-            <div style={{ position: "absolute", width: "926px", height: "440px", backgroundColor: "white"}} />
-            <div style={{ position: "absolute", width: "926px", height: "440px", backgroundColor: "black", opacity: "0.5", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>Ai 면접 준비가 되시면 아래 시작 버튼을 누르세요.</div>
-            <div style={{ position: "absolute", alignItems: "center"}}>
-                <>
-                <video ref={videoRef} width={60} height={75} style={{ objectFit: 'cover' }} />
-                </>
-                <div style={{color: 'black', fontSize: 16, fontFamily: 'Pretendard', fontWeight: '500'}}>나</div>
-            </div>
-        </div>
-        <div>
-            {!isRecording ? (
-                <button onClick={handleStartRecording}>Start Recording</button>
-            ) : (
-                <button onClick={handleStopRecording}>Stop Recording</button>
-            )}
-            {recordedVideoBlob && (
-                <div>
-                <video src={URL.createObjectURL(recordedVideoBlob)} controls />
-                <button onClick={handleSaveRecording}>Save Recording</button>
+        <div
+        style={{
+            position: 'relative',
+            width: '100%',
+            height: '440px',
+            backgroundColor: 'black',
+            display: 'inline-flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            flexDirection: 'column',
+        }}
+        >
+            <Interviewerdiv />
+            {isLoading && <Loaddiv>Ai 면접 준비가 되시면 아래 시작 버튼을 누르세요.</Loaddiv>}
+            <div style={{ position: 'absolute', alignItems: 'center' }}>
+                <div style={{ position: "relative", display: "inline-flex", justifyContent: "flex-start", alignItems: "center", flexDirection: "column"}}>
+                    <video ref={videoRef} width={60} height={75} style={{ objectFit: 'cover', margin: '16px 0px 0px 830px'}} />
+                    <div style={{ color: 'black', fontSize: 16, fontWeight: '500', margin: '8px 0px 0px 830px' }}>나</div>
                 </div>
-            )}
+            </div>
+            <div style={{ position: 'absolute', background: '#1A1A1A', borderRadius: 50, bottom: 40, left: '50%', transform: 'translateX(-50%)', alignItems: 'center', display: isLoading ? 'none' : 'flex', color: 'white', paddingLeft: 32, paddingRight: 32, paddingTop: 16, paddingBottom: 16, }}>
+                <div style={{margin: "5px"}}>Q.</div>
+                <div>TCP, UDP에 대해서 아는대로 설명해보세요.</div>
+            </div>
+            {isEnding && <Loaddiv>질문 면접이 종료되었습니다.</Loaddiv>}
+        </div>
+        <div style={{ alignItems: "center", display: "flex", flexDirection: "column", marginTop: "48px"}}>
+            <div>
+                {!isRecording ? (
+                    <Startbtn onClick={handleStartRecording}>시작</Startbtn>
+                ) : (
+                    <Endbtn onClick={handleStopRecording}>정지</Endbtn>
+                )}
+            </div>
+            <div style={{ color: '#666666', fontSize: 18, fontFamily: 'Pretendard', fontWeight: '500', wordWrap: 'break-word', marginTop: '16px' }}>면접 시간</div>
+            <Timer timerRunning={timerRunning} setTimerRunning={setTimerRunning} />
         </div>
     </div>
 );
