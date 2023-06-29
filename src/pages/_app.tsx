@@ -4,6 +4,7 @@ import { theme } from "@/core/theme";
 import Header from "@/components/Header";
 
 import "@public/global.css";
+require("src/core/registerChartjs");
 
 function getLayout(component: JSX.Element) {
   return (

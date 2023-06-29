@@ -1,6 +1,5 @@
 import React, { useContext, createContext, useState } from "react";
 import S from "./RadioButtonGroup.styled";
-import Button from "./Button";
 
 interface RadioButtonGroupContextType {
   clicked(name: string): void;

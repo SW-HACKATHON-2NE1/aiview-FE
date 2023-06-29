@@ -1,6 +1,5 @@
-
-import { useEffect } from 'react';
-import axios from 'axios';
+import { useEffect } from "react";
+import axios from "axios";
 import Mainimage from "@public/icons/main_image.svg";
 import Button from "@/components/Button";
 import styled from "@emotion/styled";
@@ -9,6 +8,7 @@ const Container = styled.div`
   height: 100%;
   width: fit-content;
   display: flex;
+  gap: 140px;
   align-items: center;
   margin: 0 auto;
 `;
@@ -37,23 +37,22 @@ const Mainbutton = styled("button")(({ theme }) => ({
 }));
 
 export default function Home() {
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const storedToken = localStorage.getItem('token');
+        const storedToken = localStorage.getItem("token");
 
-        console.log("storedToken :",storedToken)
+        console.log("storedToken :", storedToken);
 
         if (!storedToken) {
-          const response = await axios.get('http://54.180.14.177/');
-          console.log("response : ",response)
+          const response = await axios.get("http://54.180.14.177/");
+          console.log("response : ", response);
           const token = response.data.token;
-          localStorage.setItem('token', token);
-          console.log('Token stored:', token);
+          localStorage.setItem("token", token);
+          console.log("Token stored:", token);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -62,17 +61,31 @@ export default function Home() {
 
   return (
     <main>
-      <div style={{ height: "23px"}}/>
+      <div style={{ height: "23px" }} />
       <Container>
         <LeftSection>
           <Mainimage />
         </LeftSection>
         <RightSection>
-          <div style={{ color: '#1A1A1A', fontSize: 28, fontFamily: 'Pretendard', fontWeight: '700', lineHeight: "44px", wordWrap: 'break-word' }}>
-            AI로 실전처럼 면접을 연습하고 <br/>자신의 역량을 파악해보세요
+          <div
+            style={{
+              color: "#1A1A1A",
+              fontSize: 28,
+              fontFamily: "Pretendard",
+              fontWeight: "700",
+              lineHeight: "44px",
+              wordWrap: "break-word",
+            }}
+          >
+            AI로 실전처럼 면접을 연습하고 <br />
+            자신의 역량을 파악해보세요
           </div>
-          <div style={{ height: "56px"}}/>
-          <Mainbutton onClick={() => { window.location.href = 'http://localhost:3000/select'; }}>
+          <div style={{ height: "56px" }} />
+          <Mainbutton
+            onClick={() => {
+              window.location.href = "http://localhost:3000/select";
+            }}
+          >
             면접 시작하기
           </Mainbutton>
         </RightSection>
