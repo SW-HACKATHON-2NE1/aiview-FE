@@ -4,6 +4,7 @@ import { theme } from "@/core/theme";
 import Header from "@/components/Header";
 
 import "@public/global.css";
+import { SWRConfig } from "swr";
 require("src/core/registerChartjs");
 
 function getLayout(component: JSX.Element) {
@@ -18,7 +19,20 @@ function getLayout(component: JSX.Element) {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
-      {getLayout(<Component {...pageProps} />)}
+      <SWRConfig
+        value={{
+          fetcher: ([url, token]) =>
+            fetch(url, {
+              headers: {
+                Authorization: token,
+              },
+            })
+              .then((res) => res.json())
+              .catch((E) => E),
+        }}
+      >
+        {getLayout(<Component {...pageProps} />)}
+      </SWRConfig>
     </ThemeProvider>
   );
 }
