@@ -61,15 +61,10 @@ RadioButtonGroup.Button = function ({
     if (onClick) onClick(ev);
   };
 
-  return isSelected ? (
-    <S.SelectedRadioButton onClick={handleClick} {...props}>
+  return (
+    <S.RadioButton onClick={handleClick} isSelected={isSelected} {...props}>
       <span>{name}</span>
-      {selectedIcon}
-    </S.SelectedRadioButton>
-  ) : (
-    <S.RadioButton onClick={handleClick} {...props}>
-      <span>{name}</span>
-      {defaultIcon}
+      {isSelected ? selectedIcon : defaultIcon}
     </S.RadioButton>
   );
 };
