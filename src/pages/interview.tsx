@@ -1,6 +1,19 @@
 import { relative } from "path";
 import { useEffect, useState } from "react";
 import Webcam from "react-webcam";
+import styled from "@emotion/styled";
+
+const Startbtn = styled("button")(({ theme }) => ({
+  backgroundColor: "#497AF8",
+  border: "1px solid #000000",
+  borderRadius: "100%",
+  fontSize: "24px",
+  fontWeight: 700,
+  fontFamily: "pretendard",
+  color: "white",
+  width: "80px",
+  height: "80px",
+}));
 
 export default function ThemePage() {
   function Timer() {
@@ -44,8 +57,7 @@ export default function ThemePage() {
 
         <div style={{ height: "48px"}} />
         
-        <button style={{width: '80px', height: '80px', background: '#497AF8', borderRadius: "100%", color: 'white', fontSize: 24, fontFamily: 'Pretendard', fontWeight: '700', wordWrap: 'break-word'}}>시작</button>
-
+        <Startbtn>시작</Startbtn>
         <div style={{ height: "24px" }}/>
 
         <div style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', display: 'inline-flex'}}>
