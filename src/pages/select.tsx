@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import Divider from "@/components/Divider";
 import S from "@/pages/select.styled";
+import Link from "next/link";
 
 const bigJobs = [
   "IT・인터넷",
@@ -99,9 +100,11 @@ export default function SelectPage() {
           isHidden={!states.subject}
           onClick={() => {
             console.log("설정 완료!\n", states);
+            // window.location.href = "http://localhost:3000/interview";
           }}
         >
-          다음
+          <Link href="/interview">다음</Link>
+          
         </S.SubmitButton>
       </S.PageBody>
     </S.PageContainer>
