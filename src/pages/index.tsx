@@ -1,4 +1,30 @@
+import { useEffect } from 'react';
+import axios from 'axios';
+
 export default function Home() {
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const storedToken = localStorage.getItem('token');
+
+        console.log("storedToken :",storedToken)
+
+        if (!storedToken) {
+          const response = await axios.get('http://54.180.14.177/');
+          console.log("response : ",response)
+          const token = response.data.token;
+          localStorage.setItem('token', token);
+          console.log('Token stored:', token);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <main>
       <div style={{ height: "23px"}}/>
