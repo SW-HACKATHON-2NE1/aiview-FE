@@ -3,6 +3,7 @@ import axios from "axios";
 import Mainimage from "@public/icons/main_image.svg";
 import Button from "@/components/Button";
 import styled from "@emotion/styled";
+import Link from "next/link";
 
 const Container = styled.div`
   height: 100%;
@@ -83,10 +84,12 @@ export default function Home() {
           <div style={{ height: "56px" }} />
           <Mainbutton
             onClick={() => {
-              window.location.href = "http://localhost:3000/select";
+              // window.location.href = "http://localhost:3000/select";
             }}
           >
-            면접 시작하기
+            <Link href="/select">
+              면접 시작하기
+              </Link>
           </Mainbutton>
         </RightSection>
       </Container>
