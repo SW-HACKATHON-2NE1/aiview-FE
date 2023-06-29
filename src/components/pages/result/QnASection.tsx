@@ -26,6 +26,11 @@ function QnASection({ qnaArr }: QnASectionProps) {
     bestAnswer,
   } = qnaArr[currentTabIndex];
 
+  const formattedTranscription = transcription.replace(/%(.+?)%/g, (match, p1) => {
+    return `<span style="color: red; background-color: rgba(255, 52, 52, 0.1); margin: 0px">${p1.trim()}</span>`;
+  });
+  const existingText = transcription.replace(/%(.+?)%/g, '');
+
   return (
     <section>
       <h2>질문별 분석</h2>
@@ -41,7 +46,8 @@ function QnASection({ qnaArr }: QnASectionProps) {
           </div>
           <div>
             <h3>당신의 답변</h3>
-            <p>{transcription}</p>
+            <p dangerouslySetInnerHTML={{ __html: formattedTranscription }} />
+            <p style={{ color: 'black' }}>{existingText}</p>
           </div>
           <S.PointContainer>
             <span>발음 평가 점수</span>
