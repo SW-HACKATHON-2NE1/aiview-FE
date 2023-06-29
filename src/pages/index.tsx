@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import axios from "axios";
 import Mainimage from "@public/images/main_image.svg";
 import styled from "@emotion/styled";
 import Link from "next/link";
@@ -36,26 +35,25 @@ const Mainbutton = styled("button")(({ theme }) => ({
   height: "56px",
 }));
 
+const fetchData = async () => {
+  try {
+    const storedToken = localStorage.getItem("token");
+
+    console.log("storedToken :", storedToken);
+
+    if (storedToken) return;
+    const { token } = await fetch("https://aiview.shop/").then((res) =>
+      res.json()
+    );
+    localStorage.setItem("token", token);
+    console.log("Token stored:", token);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
 export default function Home() {
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const storedToken = localStorage.getItem("token");
-
-        console.log("storedToken :", storedToken);
-
-        if (!storedToken) {
-          const response = await axios.get("http://54.180.14.177/");
-          console.log("response : ", response);
-          const token = response.data.token;
-          localStorage.setItem("token", token);
-          console.log("Token stored:", token);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchData();
   }, []);
 
