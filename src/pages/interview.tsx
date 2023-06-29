@@ -3,6 +3,9 @@ import S from "@/pages/interview.styled";
 import Timer from "@/components/pages/interview/Timer";
 import React, { useEffect, useRef, useState } from "react";
 import VideoRecorder from "@/core/VideoRecorder";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import CSR from "@/components/CSR";
 
 enum Phase {
   Idle,
@@ -48,15 +51,37 @@ function ReadyPlaceholder({ onCountOver }: { onCountOver?: () => void }) {
     </div>
   );
 }
+function InterviewPlaceholder({ question }: { question: string }) {
+  return (
+    <div
+      style={{
+        textAlign: "center",
+        backgroundColor: "#1A1A1A",
+        color: "white",
+        fontSize: "24px",
+        fontWeight: 500,
+        border: "1px solid #333",
+        borderRadius: "50px",
+        padding: "16px 32px",
+        marginTop: "240px",
+      }}
+    >
+      <h3>{question}</h3>
+    </div>
+  );
+}
 function EndPlaceholder() {
   return (
     <h3 style={{ color: "white" }}>첫 번째 질문 면접이 종료되었습니다.</h3>
   );
 }
-export default function InterviewPage() {
+
+interface InterviewProps {
+  question: FirstQuestionAPIResponse;
+}
+function Interview({ question }: InterviewProps) {
   const [phase, setPhase] = useState<Phase>(Phase.Idle);
   const videoRecorder = useRef<VideoRecorder>(new VideoRecorder());
-
   useEffect(() => {
     videoRecorder.current.video = document.getElementById(
       "webcam_video"
@@ -88,6 +113,8 @@ export default function InterviewPage() {
                   onCountOver={() => setPhase(Phase.Interview)}
                 />
               );
+            case Phase.Interview:
+              return <InterviewPlaceholder question={question.content} />;
             case Phase.End:
               return <EndPlaceholder />;
           }
@@ -115,5 +142,26 @@ export default function InterviewPage() {
       )}
       <Timer isStarted={phase == Phase.Interview} onTimerEnded={handleEnd} />
     </S.PageContainer>
+  );
+}
+
+function InterviewPageBody() {
+  const router = useRouter();
+  const subjectid = router.query["subjectid"] ?? "";
+
+  const firstQuestion = useSWR<FirstQuestionAPIResponse>([
+    `https://aiview.shop/question/first/${subjectid}`,
+    typeof localStorage !== undefined ? localStorage.getItem("token") : "",
+  ]);
+
+  if (firstQuestion.isLoading || !firstQuestion.data) return <>loading...</>;
+
+  return <Interview question={firstQuestion.data} />;
+}
+export default function InterviewPage() {
+  return (
+    <CSR>
+      <InterviewPageBody />
+    </CSR>
   );
 }

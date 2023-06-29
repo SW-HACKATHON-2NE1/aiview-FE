@@ -24,3 +24,9 @@ interface ReportAPIResponse {
   scoreDB: number;
   scoreIS: number;
 }
+
+interface FirstQuestionAPIResponse {
+  questionId: null;
+  content: string;
+  subjectCode: string;
+}

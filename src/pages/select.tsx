@@ -42,6 +42,14 @@ const subjects = [
   "데이터베이스",
   "정보보호",
 ];
+const subjectIDmap = {
+  자료구조: "DS",
+  알고리즘: "AL",
+  네트워크: "NT",
+  운영체제: "OS",
+  데이터베이스: "DB",
+  정보보호: "IS",
+};
 
 interface State {
   bigJob: ValueOf<typeof bigJobs> | null;
@@ -96,14 +104,14 @@ export default function SelectPage() {
             items={subjects}
           />
         </S.SubjectSelectSection>
-        <S.SubmitButton
-          isHidden={!states.subject}
-          onClick={() => {
-            console.log("설정 완료!\n", states);
-            // window.location.href = "http://localhost:3000/interview";
-          }}
-        >
-          <Link href="/interview">다음</Link>
+        <S.SubmitButton isHidden={!states.subject}>
+          <Link
+            href={`/interview?subjectid=${
+              subjectIDmap[states.subject as keyof typeof subjectIDmap]
+            }`}
+          >
+            다음
+          </Link>
         </S.SubmitButton>
       </S.PageBody>
     </S.PageContainer>
