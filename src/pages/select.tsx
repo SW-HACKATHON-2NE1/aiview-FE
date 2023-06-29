@@ -99,6 +99,7 @@ export default function SelectPage() {
           isHidden={!states.subject}
           onClick={() => {
             console.log("설정 완료!\n", states);
+            window.location.href = "http://localhost:3000/interview";
           }}
         >
           다음
