@@ -26,10 +26,13 @@ function QnASection({ qnaArr }: QnASectionProps) {
     bestAnswer,
   } = qnaArr[currentTabIndex];
 
-  const formattedTranscription = transcription.replace(/%(.+?)%/g, (match, p1) => {
-    return `<span style="color: red; background-color: rgba(255, 52, 52, 0.1); margin: 0px">${p1.trim()}</span>`;
-  });
-  const existingText = transcription.replace(/%(.+?)%/g, '');
+  const formattedTranscription = transcription.replace(
+    /%(.+?)%/g,
+    (match, p1) => {
+      return `<span style="color: red; background-color: rgba(255, 52, 52, 0.1); margin: 0px">${p1.trim()}</span>`;
+    }
+  );
+  const existingText = transcription.replace(/%(.+?)%/g, "");
 
   return (
     <section>
@@ -47,11 +50,13 @@ function QnASection({ qnaArr }: QnASectionProps) {
           <div>
             <h3>당신의 답변</h3>
             <p dangerouslySetInnerHTML={{ __html: formattedTranscription }} />
-            <p style={{ color: 'black' }}>{existingText}</p>
+            <p style={{ color: "black" }}>{existingText}</p>
           </div>
           <S.PointContainer>
             <span>발음 평가 점수</span>
-            <span>{pronunciationScore.toFixed(2).padStart(2, "0")}점</span>
+            <span>
+              {(pronunciationScore * 100).toFixed(2).padStart(2, "0")}점
+            </span>
           </S.PointContainer>
         </S.SpeakSubSection>
 

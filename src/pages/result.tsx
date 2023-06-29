@@ -49,7 +49,7 @@ function PageBody() {
     <PageBodyContainer>
       <section>
         <div>
-          <h2>단어 빈도</h2>
+          <h2>자주 표현된 감정</h2>
           <div>
             <WordSpread
               {...{
