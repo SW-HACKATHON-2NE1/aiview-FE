@@ -39,7 +39,7 @@ const PageBodyContainer = styled("div")({
 
 function PageBody() {
   const data = useSWR<ReportAPIResponse>([
-    "http://54.180.14.177/report",
+    "https://aiview.shop/report",
     typeof localStorage !== undefined ? localStorage.getItem("token") : "",
   ]);
 

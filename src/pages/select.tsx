@@ -104,7 +104,6 @@ export default function SelectPage() {
           }}
         >
           <Link href="/interview">다음</Link>
-          
         </S.SubmitButton>
       </S.PageBody>
     </S.PageContainer>
