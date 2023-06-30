@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import Divider from "@/components/Divider";
 import S from "@/pages/select.styled";
-import { useRouter } from "next/router";
 
 const bigJobs = [
   "IT・인터넷",
@@ -56,7 +55,6 @@ interface State {
   subject: ValueOf<typeof subjects> | null;
 }
 export default function SelectPage() {
-  const router = useRouter();
   const [states, setStates] = useState<State>({
     bigJob: null,
     smolJob: null,
@@ -106,13 +104,9 @@ export default function SelectPage() {
         </S.SubjectSelectSection>
         <S.SubmitButton
           isHidden={!states.subject}
-          onClick={() =>
-            router.push(
-              `/interview?subjectid=${
-                subjectIDmap[states.subject as keyof typeof subjectIDmap]
-              }`
-            )
-          }
+          href={`/interview?subjectid=${
+            subjectIDmap[states.subject as keyof typeof subjectIDmap]
+          }`}
         >
           다음
         </S.SubmitButton>

@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import LinkButton from "@/components/LinkButton";
 import List from "@/components/List";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
@@ -73,14 +73,16 @@ const wingwing = keyframes({
   "50%": { transform: "translateY(30px)" },
   "100%": { transform: "translateY(-30px)" },
 });
-const SubmitButton = styled(Button)<{ isHidden: boolean }>(({ isHidden }) => ({
-  marginTop: "140px",
-  alignSelf: "center",
-  visibility: isHidden ? "hidden" : "visible",
-  transition: "all 300ms",
-  opacity: isHidden ? 0 : 1,
-  animation: `${wingwing} 4s ease infinite`,
-}));
+const SubmitButton = styled(LinkButton)<{ isHidden: boolean }>(
+  ({ isHidden }) => ({
+    marginTop: "140px",
+    alignSelf: "center",
+    visibility: isHidden ? "hidden" : "visible",
+    transition: "all 300ms",
+    opacity: isHidden ? 0 : 1,
+    animation: `${wingwing} 4s ease infinite`,
+  })
+);
 
 export default {
   PageContainer,
