@@ -9,7 +9,7 @@ const Container = styled.div`
   display: flex;
   gap: 140px;
   align-items: center;
-  margin: 0 auto;
+  margin: 140px auto;
 `;
 
 const LeftSection = styled.div`

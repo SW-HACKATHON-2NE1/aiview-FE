@@ -36,7 +36,10 @@ function Tabs({
         <TabButton
           key={item}
           isSelected={item == currentItem}
-          onClick={() => setCurrentItem(item)}
+          onClick={() => {
+            if (onTabChanged) onTabChanged(item);
+            setCurrentItem(item);
+          }}
         >
           {item}
         </TabButton>

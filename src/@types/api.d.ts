@@ -34,3 +34,12 @@ interface FirstQuestionAPIResponse {
 interface PreSignedUploadAPIResponse {
   uploadUrl: string;
 }
+
+interface GPTAPIResponse {
+  questionId: number;
+  score: number;
+  feedback: string;
+  bestAnswer: string;
+  tailQuestion: string;
+  tailQuestionId: number;
+}

@@ -10,9 +10,7 @@ interface QnASectionProps {
     score: number;
     feedback: string;
     bestAnswer: string;
-    questionId: number;
     pronunciationScore: number;
-    url: string;
   }>;
 }
 function QnASection({ qnaArr }: QnASectionProps) {
