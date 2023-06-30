@@ -6,9 +6,9 @@ import VideoRecorder from "@/core/VideoRecorder";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import CSR from "@/components/CSR";
-import axios from "axios";
+import { data } from "@/pages/result";
 
-enum Phase {
+export enum Phase {
   Idle,
   Ready,
   Interview,
@@ -64,7 +64,9 @@ function InterviewPlaceholder({ question }: { question: string }) {
         border: "1px solid #333",
         borderRadius: "50px",
         padding: "16px 32px",
-        marginTop: "240px",
+        marginTop: "460px",
+        zIndex: 999,
+        position: "relative",
       }}
     >
       <h3>{question}</h3>
@@ -72,15 +74,16 @@ function InterviewPlaceholder({ question }: { question: string }) {
   );
 }
 function EndPlaceholder() {
-  return (
-    <h3 style={{ color: "white" }}>첫 번째 질문 면접이 종료되었습니다.</h3>
-  );
+  return <h3 style={{ color: "white" }}>질문 면접이 종료되었습니다.</h3>;
 }
 
 interface InterviewProps {
   question: FirstQuestionAPIResponse;
+  subjectid: string;
 }
-function Interview({ question }: InterviewProps) {
+function Interview({ question, subjectid }: InterviewProps) {
+  const router = useRouter();
+  const index = ~~(router.query["index"] as any); //n번째 질문
   const [phase, setPhase] = useState<Phase>(Phase.Idle);
   const videoRecorder = useRef<VideoRecorder>(new VideoRecorder());
   useEffect(() => {
@@ -97,6 +100,7 @@ function Interview({ question }: InterviewProps) {
   };
 
   const handleEnd = async () => {
+    setPhase(Phase.End);
     videoRecorder.current.stopRecorder();
 
     const token = localStorage.getItem("token") as string;
@@ -109,7 +113,6 @@ function Interview({ question }: InterviewProps) {
         },
       }
     ).then<PreSignedUploadAPIResponse>((res) => res.json());
-    console.log(uploadUrl);
     const blob = new Blob(videoRecorder.current.chunks, { type: "video/webm" });
     const formdata = new FormData();
     formdata.append("video", blob, "video.webm");
@@ -121,47 +124,62 @@ function Interview({ question }: InterviewProps) {
       },
     }).catch((e) => {});
 
+    /*
     await fetch(`https://aiview.shop/transcription/${question.questionId}`, {
       method: "POST",
-      body: JSON.stringify({}),
       headers: {
         Authorization: token,
       },
     });
 
     const data = await fetch(`https://aiview.shop/gpt/${question.questionId}`, {
+      method: "POST",
       headers: {
         Authorization: token,
       },
-      body: JSON.stringify({}),
-    }).then((res) => res.json());
+    }).then<GPTAPIResponse>((res) => res.json());
+    */
 
-    setPhase(Phase.End);
+    router.push(`/pronunciation?index=${index}&subjectid=${subjectid}`);
   };
 
   return (
     <S.PageContainer>
       <S.InterviewContainer>
-        {(() => {
-          switch (phase) {
-            case Phase.Idle:
-              return <DefaultPlaceholder />;
-            case Phase.Ready:
-              return (
-                <ReadyPlaceholder
-                  onCountOver={() => setPhase(Phase.Interview)}
-                />
-              );
-            case Phase.Interview:
-              return <InterviewPlaceholder question={question.content} />;
-            case Phase.End:
-              return <EndPlaceholder />;
-          }
-        })()}
-        <S.WebcamContainer>
-          <Webcam id="webcam_video" />
-          <p>나</p>
-        </S.WebcamContainer>
+        <div style={{ position: "absolute" }}>
+          {(() => {
+            switch (phase) {
+              case Phase.Idle:
+                return <DefaultPlaceholder />;
+              case Phase.Ready:
+                return (
+                  <ReadyPlaceholder
+                    onCountOver={() => setPhase(Phase.Interview)}
+                  />
+                );
+              case Phase.Interview:
+                return <InterviewPlaceholder question={question.content} />;
+              case Phase.End:
+                return <EndPlaceholder />;
+            }
+          })()}
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            opacity: phase == Phase.Interview ? 1 : 0.25,
+            width: "calc(926px * 1.4)",
+            height: "calc(440px * 1.4)",
+            backgroundImage: "url(/icons/interviewer.svg)",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+          }}
+        >
+          <S.WebcamContainer>
+            <Webcam id="webcam_video" />
+            <p>나</p>
+          </S.WebcamContainer>
+        </div>
       </S.InterviewContainer>
 
       {phase == Phase.Idle ? (
@@ -179,14 +197,17 @@ function Interview({ question }: InterviewProps) {
           />
         </S.StopButton>
       )}
-      <Timer isStarted={phase == Phase.Interview} onTimerEnded={handleEnd} />
+      <Timer isStarted={phase} onTimerEnded={handleEnd} />
     </S.PageContainer>
   );
 }
 
 function InterviewPageBody() {
   const router = useRouter();
+  const index = ~~(router.query["index"] as any); //n번째 질문
+
   const subjectid = router.query["subjectid"];
+  /*
   if (!subjectid) return <>loading...</>;
 
   const firstQuestion = useSWR<FirstQuestionAPIResponse>([
@@ -195,7 +216,14 @@ function InterviewPageBody() {
   ]);
   if (firstQuestion.isLoading || !firstQuestion.data) return <>loading...</>;
 
-  return <Interview question={firstQuestion.data} />;
+  */
+
+  return (
+    <Interview
+      question={{ content: data.reports[index].question } as any}
+      subjectid={subjectid + ""}
+    />
+  );
 }
 export default function InterviewPage() {
   return (

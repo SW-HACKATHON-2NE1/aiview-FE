@@ -30,7 +30,7 @@ const PageContainer = styled("div")({
 
 const InterviewContainer = styled("div")(({ theme }) => ({
   width: "100%",
-  height: "440px",
+  height: "calc(440px * 1.4)",
   display: "inline-flex",
   backgroundColor: "black",
   justifyContent: "center",
@@ -43,13 +43,12 @@ const InterviewContainer = styled("div")(({ theme }) => ({
 }));
 
 const WebcamContainer = styled("div")({
-  position: "absolute",
   alignItems: "center",
-  left: "1100px",
-  top: "96px",
+  float: "right",
+  margin: "16px 16px 0 0",
   "& > video": {
-    width: "60px",
-    height: "75px",
+    width: "110px",
+    height: "130px",
     background: "linear-gradient(0deg, #D9D9D9 0%, #D9D9D9 100%)",
     borderRadius: "10px",
   },
