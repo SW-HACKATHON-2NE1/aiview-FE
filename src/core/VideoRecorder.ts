@@ -1,13 +1,14 @@
 class VideoRecorder {
-  public video: HTMLVideoElement | null = null;
+  public video: HTMLMediaElement | null = null;
   public mediaRecorder: MediaRecorder | null = null;
   public readonly chunks: Blob[] = [];
 
   public async startVideo() {
     const stream = await navigator.mediaDevices.getUserMedia({
       video: { width: 60, height: 75 },
+      audio: true,
     });
-    if (!this.video) return;
+    this.video ??= document.getElementsByTagName("video")[0];
     this.video.srcObject = stream;
     this.video.play();
   }
@@ -20,7 +21,7 @@ class VideoRecorder {
       this.downloadRecordedVideo();
     };
 
-    this.mediaRecorder = new MediaRecorder(this.video.srcObject as MediaStream);
+    this.mediaRecorder = new MediaRecorder(this.video.srcObject as any);
     this.mediaRecorder.addEventListener("dataavailable", handleDataAvailable);
     this.mediaRecorder.start();
   }
@@ -32,7 +33,7 @@ class VideoRecorder {
   }
 
   public downloadRecordedVideo() {
-    const blob = new Blob(this.chunks, { type: "video/webm" });
+    const blob = new Blob(this.chunks, { type: "video/mp4" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;

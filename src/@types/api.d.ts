@@ -26,7 +26,7 @@ interface ReportAPIResponse {
 }
 
 interface FirstQuestionAPIResponse {
-  questionId: null;
+  questionId: number;
   content: string;
   subjectCode: string;
 }

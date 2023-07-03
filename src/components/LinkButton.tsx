@@ -1,10 +1,15 @@
 import { useRouter } from "next/router";
-import React from "react";
 
-interface LinkButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+type LinkButtonProps<P> = P & {
   href: string;
-}
-function LinkButton({ href, onClick, ...props }: LinkButtonProps) {
+  Component?: React.ComponentType<P> | React.ElementType<P>;
+};
+function LinkButton({
+  href,
+  onClick,
+  Component = "button",
+  ...props
+}: LinkButtonProps<React.HTMLAttributes<HTMLButtonElement>>) {
   const router = useRouter();
 
   const handleClick: typeof onClick = (ev) => {
@@ -12,7 +17,7 @@ function LinkButton({ href, onClick, ...props }: LinkButtonProps) {
     router.push(href);
   };
 
-  return <button onClick={handleClick} {...props} />;
+  return <Component onClick={handleClick} {...props} />;
 }
 
 export default LinkButton;

@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 
 import "@public/global.css";
 import { SWRConfig } from "swr";
+import TokenContextProvider from "@/context/TokenContext";
 require("src/core/registerChartjs");
 
 function getLayout(component: JSX.Element) {
@@ -31,7 +32,9 @@ export default function App({ Component, pageProps }: AppProps) {
               .catch((E) => E),
         }}
       >
-        {getLayout(<Component {...pageProps} />)}
+        <TokenContextProvider>
+          {getLayout(<Component {...pageProps} />)}
+        </TokenContextProvider>
       </SWRConfig>
     </ThemeProvider>
   );

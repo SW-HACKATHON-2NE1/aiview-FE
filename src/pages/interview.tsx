@@ -6,7 +6,8 @@ import VideoRecorder from "@/core/VideoRecorder";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import CSR from "@/components/CSR";
-import { data } from "@/pages/result";
+import { data as defaultAPIData } from "@/pages/result";
+import { useToken } from "@/context/TokenContext";
 
 export enum Phase {
   Idle,
@@ -77,6 +78,13 @@ function EndPlaceholder() {
   return <h3 style={{ color: "white" }}>질문 면접이 종료되었습니다.</h3>;
 }
 
+async function fetchToken() {
+  const { token } = await fetch("https://aiview.shop/").then((res) =>
+    res.json()
+  );
+  return token;
+}
+
 interface InterviewProps {
   question: FirstQuestionAPIResponse;
   subjectid: string;
@@ -86,6 +94,9 @@ function Interview({ question, subjectid }: InterviewProps) {
   const index = ~~(router.query["index"] as any); //n번째 질문
   const [phase, setPhase] = useState<Phase>(Phase.Idle);
   const videoRecorder = useRef<VideoRecorder>(new VideoRecorder());
+  const { getToken } = useToken();
+  console.log("token: ", getToken());
+
   useEffect(() => {
     videoRecorder.current.video = document.getElementById(
       "webcam_video"
@@ -103,13 +114,11 @@ function Interview({ question, subjectid }: InterviewProps) {
     setPhase(Phase.End);
     videoRecorder.current.stopRecorder();
 
-    const token = localStorage.getItem("token") as string;
-
     const { uploadUrl } = await fetch(
       `https://aiview.shop/presigned-url/upload/${question.questionId}`,
       {
         headers: {
-          Authorization: token,
+          Authorization: getToken(),
         },
       }
     ).then<PreSignedUploadAPIResponse>((res) => res.json());
@@ -176,7 +185,7 @@ function Interview({ question, subjectid }: InterviewProps) {
           }}
         >
           <S.WebcamContainer>
-            <Webcam id="webcam_video" />
+            <Webcam id="webcam_video" audio />
             <p>나</p>
           </S.WebcamContainer>
         </div>
@@ -202,33 +211,24 @@ function Interview({ question, subjectid }: InterviewProps) {
   );
 }
 
-function InterviewPageBody() {
-  const router = useRouter();
-  const index = ~~(router.query["index"] as any); //n번째 질문
-
-  const subjectid = router.query["subjectid"];
-  /*
-  if (!subjectid) return <>loading...</>;
-
-  const firstQuestion = useSWR<FirstQuestionAPIResponse>([
-    `https://aiview.shop/question/first/${subjectid}`,
-    typeof localStorage !== undefined ? localStorage.getItem("token") : "",
-  ]);
-  if (firstQuestion.isLoading || !firstQuestion.data) return <>loading...</>;
-
-  */
-
-  return (
-    <Interview
-      question={{ content: data.reports[index].question } as any}
-      subjectid={subjectid + ""}
-    />
-  );
-}
 export default function InterviewPage() {
-  return (
-    <CSR>
-      <InterviewPageBody />
-    </CSR>
-  );
+  const { getToken } = useToken();
+  const router = useRouter();
+  const index = Number(router.query["index"]); //n번째 질문
+  const subjectid = String(router.query["subjectid"]);
+
+  const defaultQuestion = {
+    content: defaultAPIData.reports[index].question,
+    questionId: -1,
+    subjectCode: subjectid,
+  };
+
+  const { isLoading, data: firstQuestion = defaultQuestion } =
+    useSWR<FirstQuestionAPIResponse>([
+      `https://aiview.shop/question/first/${subjectid}`,
+      getToken(),
+    ]);
+  if (isLoading || !firstQuestion) return <>loading...</>;
+
+  return <Interview question={firstQuestion} subjectid={subjectid} />;
 }

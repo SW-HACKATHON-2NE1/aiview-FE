@@ -2,7 +2,7 @@ import type { RadioButtonGroupProps } from "./RadioButtonGroup";
 import S from "./List.styled";
 
 interface ListProps extends Omit<RadioButtonGroupProps, "children"> {
-  items: string[];
+  items: readonly string[];
   defaultIcon?: JSX.Element | undefined;
 }
 function List({ items, defaultIcon, ...props }: ListProps) {

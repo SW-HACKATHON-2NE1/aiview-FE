@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import Divider from "@/components/Divider";
 import S from "@/pages/select.styled";
+import Button from "@/components/Button";
 
 const bigJobs = [
   "IT・인터넷",
@@ -17,7 +18,7 @@ const bigJobs = [
   "디자인",
   "미디어",
   "전문・특수직",
-];
+] as const;
 const smolJobs = [
   "QA",
   "앱개발",
@@ -31,7 +32,7 @@ const smolJobs = [
   "HW・임베디드",
   "SW・솔루션・ERP",
   "서비스기획・PM",
-];
+] as const;
 const subjects = [
   "자료구조",
   "알고리즘",
@@ -39,7 +40,7 @@ const subjects = [
   "운영체제",
   "데이터베이스",
   "정보보호",
-];
+] as const;
 const subjectIDmap = {
   자료구조: "DS",
   알고리즘: "AL",
@@ -47,12 +48,12 @@ const subjectIDmap = {
   운영체제: "OS",
   데이터베이스: "DB",
   정보보호: "IS",
-};
+} as const;
 
 interface State {
-  bigJob: ValueOf<typeof bigJobs> | null;
-  smolJob: ValueOf<typeof smolJobs> | null;
-  subject: ValueOf<typeof subjects> | null;
+  bigJob: (typeof bigJobs)[number] | null;
+  smolJob: (typeof smolJobs)[number] | null;
+  subject: (typeof subjects)[number] | null;
 }
 export default function SelectPage() {
   const [states, setStates] = useState<State>({
@@ -62,8 +63,7 @@ export default function SelectPage() {
   });
 
   const onChanged = (key: keyof State) => (value: string) => {
-    if (key === "smolJob")
-      scrollTo({ top: window.outerHeight, behavior: "smooth" });
+    scrollTo({ top: window.outerHeight, behavior: "smooth" });
     setStates((prev) => ({
       ...prev,
       [key]: value,
@@ -103,10 +103,9 @@ export default function SelectPage() {
           />
         </S.SubjectSelectSection>
         <S.SubmitButton
+          Component={Button}
           isHidden={!states.subject}
-          href={`/interview?subjectid=${
-            subjectIDmap[states.subject as keyof typeof subjectIDmap]
-          }`}
+          href={`/interview?subjectid=${subjectIDmap[states.subject!]}`}
         >
           다음
         </S.SubmitButton>

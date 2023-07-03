@@ -10,7 +10,7 @@ const StyledCheckIcon = styled(OutlineCheckIcon)(({ theme }) => ({
 
 export interface GridSelectionProps
   extends Omit<RadioButtonGroupProps, "children"> {
-  items: string[];
+  items: readonly string[];
 }
 function GridSelection({ items, style, ...props }: GridSelectionProps) {
   return (
